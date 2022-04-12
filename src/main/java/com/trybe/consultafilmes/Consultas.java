@@ -27,6 +27,7 @@ public class Consultas {
    */
   public Set<String> atoresQueInterpretaramSiProprios() {
     return emptySet(); // TODO: Implementar.
+
   }
 
   /**
