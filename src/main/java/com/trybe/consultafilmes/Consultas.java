@@ -1,8 +1,6 @@
 package com.trybe.consultafilmes;
 
-import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
-import static java.util.Collections.emptySet;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -29,10 +27,10 @@ public class Consultas {
    */
   public Set<String> atoresQueInterpretaramSiProprios() {
     Set<String> filter = this.filmes.stream()
-    .flatMap(filme -> filme.atoresPorPersonagem.entrySet().stream())
-    .filter(conjuntoAtores -> conjuntoAtores.getValue().contains(conjuntoAtores.getKey()))
-    .map(conjuntoAtores -> conjuntoAtores.getKey())
-    .collect(Collectors.toSet());
+        .flatMap(filme -> filme.atoresPorPersonagem.entrySet().stream())
+        .filter(conjuntoAtores -> conjuntoAtores.getValue().contains(conjuntoAtores.getKey()))
+        .map(conjuntoAtores -> conjuntoAtores.getKey())
+        .collect(Collectors.toSet());
     return filter;
   }
 
@@ -46,13 +44,12 @@ public class Consultas {
    * tem o seu nome como um dos itens do campo `diretores` do mesmo filme.</p>
    */
   public List<String> atoresQueAtuaramEmFilmesDoDiretorEmOrdemAlfabetica(String diretor) {
-    List<String> filter = this.filmes.stream()
-    .filter(filme -> filme.diretores.contains(diretor))
-    .flatMap(filme -> filme.atores.stream())
-    .distinct()
-    .sorted()
-    .collect(Collectors.toList());
-    return filter;
+    return this.filmes.stream()
+        .filter(filme -> filme.diretores.contains(diretor))
+        .flatMap(filme -> filme.atores.stream())
+        .distinct()
+        .sorted()
+        .collect(Collectors.toList());
   }
 
   /**
@@ -66,9 +63,9 @@ public class Consultas {
   public List<Filme> filmesEmQuePeloMenosUmDiretorAtuouMaisRecentesPrimeiro() {
     // para cada filme vou ver os diretores, se algum diretor esta entre os atores retorna o filme
     return filmes.stream()
-    .filter(filme -> filme.atores.stream().anyMatch(ator -> filme.diretores.contains(ator)))
-    .distinct()
-    .collect(Collectors.toList());
+        .filter(filme -> filme.atores.stream().anyMatch(ator -> filme.diretores.contains(ator)))
+        .distinct()
+        .collect(Collectors.toList());
   }
 
   /**
@@ -79,6 +76,6 @@ public class Consultas {
    * conjunto de filmes que se encaixam na categoria da chave correspondente.</p>
    */
   public Map<String, Set<Filme>> filmesLancadosNoAnoAgrupadosPorCategoria(int ano) {
-    return emptyMap(); // TODO: Implementar (bônus).
+    return emptyMap();
   }
 }
