@@ -5,9 +5,11 @@ import static java.util.Collections.emptyMap;
 import static java.util.Collections.emptySet;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Consultas {
 
@@ -26,8 +28,12 @@ public class Consultas {
    * conjunto associado a esta mesma chave.</p>
    */
   public Set<String> atoresQueInterpretaramSiProprios() {
-    return emptySet(); // TODO: Implementar.
-
+    Set<String> filter = this.filmes.stream()
+    .flatMap(filme -> filme.atoresPorPersonagem.entrySet().stream())
+    .filter(conjuntoAtores -> conjuntoAtores.getValue().contains(conjuntoAtores.getKey()))
+    .map(conjuntoAtores -> conjuntoAtores.getKey())
+    .collect(Collectors.toSet());
+    return filter;
   }
 
   /**
@@ -40,7 +46,13 @@ public class Consultas {
    * tem o seu nome como um dos itens do campo `diretores` do mesmo filme.</p>
    */
   public List<String> atoresQueAtuaramEmFilmesDoDiretorEmOrdemAlfabetica(String diretor) {
-    return emptyList(); // TODO: Implementar.
+    List<String> filter = this.filmes.stream()
+    .filter(filme -> filme.diretores.contains(diretor))
+    .flatMap(filme -> filme.atores.stream())
+    .distinct()
+    .sorted()
+    .collect(Collectors.toList());
+    return filter;
   }
 
   /**
@@ -52,7 +64,11 @@ public class Consultas {
    * pelo menos um dos itens do campo `diretores` também é um item do campo `atores`.</p>
    */
   public List<Filme> filmesEmQuePeloMenosUmDiretorAtuouMaisRecentesPrimeiro() {
-    return emptyList(); // TODO: Implementar.
+    // para cada filme vou ver os diretores, se algum diretor esta entre os atores retorna o filme
+    return filmes.stream()
+    .filter(filme -> filme.atores.stream().anyMatch(ator -> filme.diretores.contains(ator)))
+    .distinct()
+    .collect(Collectors.toList());
   }
 
   /**
