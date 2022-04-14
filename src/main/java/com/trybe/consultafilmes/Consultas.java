@@ -87,7 +87,7 @@ public class Consultas {
     Map<Set<String>, Filme> mapeamentoCategoria = filmesLancadosNoAno.stream()
         // .map()
         .peek(e -> System.out.println(e))
-      .collect(Collectors.toMap(filme -> filme.categorias, filme -> filme));
+        .collect(Collectors.toMap(filme -> filme.categorias, filme -> filme));
     System.out.println(mapeamentoCategoria);
     //.collect(Collectors.toMap(category -> category, ""));
 
