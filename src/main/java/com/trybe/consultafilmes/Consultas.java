@@ -65,6 +65,7 @@ public class Consultas {
     return filmes.stream()
         .filter(filme -> filme.atores.stream().anyMatch(ator -> filme.diretores.contains(ator)))
         .distinct()
+        .sorted()
         .collect(Collectors.toList());
   }
 
@@ -76,6 +77,24 @@ public class Consultas {
    * conjunto de filmes que se encaixam na categoria da chave correspondente.</p>
    */
   public Map<String, Set<Filme>> filmesLancadosNoAnoAgrupadosPorCategoria(int ano) {
+    //  primeiro preciso de uma lista filtrada de filmes pelo ano
+    Set<Filme> filmesLancadosNoAno = filmes.stream()
+        .filter(filme -> filme.anoDeLancamento == ano)
+        .collect(Collectors.toSet());
+
+    // cada filme pode ter uma ou mais categorias, para cada categoria gerar uma chave que
+    // vai ser preenchida com os filmes
+    Map<Set<String>, Filme> mapeamentoCategoria = filmesLancadosNoAno.stream()
+        // .map()
+        .peek(e -> System.out.println(e))
+      .collect(Collectors.toMap(filme -> filme.categorias, filme -> filme));
+    System.out.println(mapeamentoCategoria);
+    //.collect(Collectors.toMap(category -> category, ""));
+
+
+    // Map<String, List<Filme>> filmeAgrupadoPorCategoria = filmesLancadosNoAno.stream()
+    // .collect(groupingBy(Filme::categoria));
+
     return emptyMap();
   }
 }
