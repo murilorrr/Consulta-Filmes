@@ -49,4 +49,8 @@ public class Filme {
   public String toString() {
     return String.format("%s (%d)", titulo, anoDeLancamento);
   }
+
+  public int getAnoDeLancamento() {
+    return this.anoDeLancamento;
+  }
 }

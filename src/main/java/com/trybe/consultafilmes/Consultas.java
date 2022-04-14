@@ -65,7 +65,7 @@ public class Consultas {
     return filmes.stream()
         .filter(filme -> filme.atores.stream().anyMatch(ator -> filme.diretores.contains(ator)))
         .distinct()
-        .sorted()
+        .sorted(Comparator.comparing(Filme::getAnoDeLancamento).reversed())
         .collect(Collectors.toList());
   }
 
