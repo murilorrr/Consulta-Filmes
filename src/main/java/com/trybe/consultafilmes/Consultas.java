@@ -78,36 +78,20 @@ public class Consultas {
    * conjunto de filmes que se encaixam na categoria da chave correspondente.</p>
    */
   public Map<String, Set<Filme>> filmesLancadosNoAnoAgrupadosPorCategoria(int ano) {
-    //  primeiro preciso de uma lista filtrada de filmes pelo ano
     Set<Filme> filmesLancadosNoAno = filmes.stream()
         .filter(filme -> filme.anoDeLancamento == ano)
         .collect(Collectors.toSet());
 
-    // cada filme pode ter uma ou mais categorias, para cada categoria gerar uma chave que
-    // vai ser preenchida com os filmes
-    List<String> categorias = filmesLancadosNoAno.stream()
+    Map<String, Set<Filme>> categoriasFilmes = filmesLancadosNoAno.stream()
             .flatMap(filme -> filme.categorias.stream())
             .distinct()
-            .collect(Collectors.toList());
+            .collect(Collectors.toMap(
+              categoria -> categoria,
+              categoria -> filmesLancadosNoAno.stream()
+                  .filter(filme -> filme.categorias.contains(categoria))
+                  .collect(Collectors.toSet())
+            ));
 
-    Map<String, Set<Filme>> categoriaFilmes = new HashMap<String, Set<Filme>>();
-    for (String categoria : categorias) {
-      Set<Filme> filmesQueContemCategoria = filmesLancadosNoAno.stream()
-          .filter(filme -> filme.categorias.contains(categoria))
-          .collect(Collectors.toSet());
-      categoriaFilmes.put(categoria, filmesQueContemCategoria);
-    }
-
-    // Map<String, Set<Filme>> categoriaFilmes = categorias.stream()
-    //     .forEach(categoria -> filmesLancadosNoAno.stream()
-    //     .filter(filme -> filme.categorias.contains(categoria))
-    //     .collect(Collectors.toSet()))
-    //     .collect(Collectors.toMap(categoria, set -> set));
-    
-    return categoriaFilmes;
-
-
-    // Map<String, List<Filme>> filmeAgrupadoPorCategoria = filmesLancadosNoAno.stream()
-    // .collect(groupingBy(Filme::categoria));
+    return categoriasFilmes;
   }
 }
